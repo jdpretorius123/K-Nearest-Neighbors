@@ -13,8 +13,6 @@ from typing import TextIO
 from kernel import Spectrum
 from sequence import Sequence
 
-from file import FastaFile
-
 NEIGHBORS = list[tuple[Sequence, float]]
 
 
@@ -107,8 +105,6 @@ class Knn:
         neighbors: NEIGHBORS = seq.neighbors[:]
         neighbors.sort(reverse=True, key=self._sortByDot)
         neighbors = neighbors[: self.k]
-        # for n in neighbors:
-        #     print(n[0].id, n[1], sep = " ", end = " ")
         return neighbors
 
     def _predId(self, neighbors: NEIGHBORS) -> str:
@@ -126,7 +122,6 @@ class Knn:
 
     def _evaluate(self, seq: Sequence) -> bool:
         """Evaluate accuracy of Sequence predId."""
-        # print(f"Pred: {seq.predId} Real: {seq.id}\n")
         return seq.predId == seq.id
 
     def _execute(self) -> float:
@@ -153,21 +148,3 @@ class Knn:
         line: str = f"{n}\t\t\t{kmer}\t\t\t{self.k}\t\t\t{acc}\n"
         out.write(line)
         out.close()
-
-
-# train: str = "KNN/train10.fasta"
-# trainF: FastaFile = FastaFile(train)
-# trainS: list[Sequence] = trainF.getSequences()
-
-# test: str = "KNN/test.fasta"
-# testF: FastaFile = FastaFile(test)
-# testS: list[Sequence] = testF.getSequences()
-
-# size: int = 8
-# kernel: Spectrum = Spectrum(size)
-
-# k: int = 1
-# knn: Knn = Knn(trainS, testS, kernel, k)
-# knn.write("KNN/knn.txt")
-# acc: float = knn._execute()
-# print(f"Acc: {acc}")
